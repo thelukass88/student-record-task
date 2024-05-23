@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Record Management</title>
+</head>
+<body>
+    <h1>Student Record Management</h1>
+
+    <!-- Form to add a new student -->
+    <h2>Add New Student</h2>
+    <form id="addStudentForm">
+        <!-- Input fields for adding a new student -->
+        <label for="studentId">Student ID:</label>
+        <input type="text" id="studentId" name="studentId"><br><br>
+
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" name="firstName"><br><br>
+
+        <label for="surname">Surname:</label>
+        <input type="text" id="surname" name="surname"><br><br>
+
+        <label for="dateOfBirth">Date of Birth:</label>
+        <input type="date" id="dateOfBirth" name="dateOfBirth"><br><br>
+
+        <label for="sex">Sex:</label>
+        <input type="text" id="sex" name="sex"><br><br>
+
+        <label for="gender">Gender:</label>
+        <input type="text" id="gender" name="gender"><br><br>
+
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="tel" id="phoneNumber" name="phoneNumber" ><br><br>
+
+        <label for="address">Address:</label>
+        <textarea id="address" name="address" rows="4" cols="50"></textarea><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <!-- Form to search for a student -->
+    <h2>Search for Student</h2>
+    <form id="searchStudentForm">
+        <label for="searchTerm">Search Term:</label>
+        <input type="text" id="searchTerm" name="searchTerm">
+        <button type="submit">Search</button>
+    </form>
+
+    <!-- Display search results here -->
+    <div id="searchResults"></div>
+
+    <!-- JavaScript to handle form submissions -->
+    <script>
+        // Function to handle form submission for adding a new student
+        document.getElementById('addStudentForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            addStudent();
+        });
+
+        // Function to handle form submission for searching a student
+        document.getElementById('searchStudentForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            searchStudent();
+        });
+
+        // Function to add a new student
+        function addStudent() {
+            var formData = {
+                studentId: document.getElementById('studentId').value,
+                firstName: document.getElementById('firstName').value,
+                surname: document.getElementById('surname').value,
+                dateOfBirth: document.getElementById('dateOfBirth').value,
+                sex: document.getElementById('sex').value,
+                gender: document.getElementById('gender').value,
+                phoneNumber: document.getElementById('phoneNumber').value,
+                address: document.getElementById('address').value
+            };
+
+            fetch('/students', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data); // Show success message
+                document.getElementById('addStudentForm').reset(); // Reset form
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        }
+
+        // Function to perform search for a student
+        function searchStudent() {
+            var searchTerm = document.getElementById('searchTerm').value;
+
+            fetch('/students/search?term=' + encodeURIComponent(searchTerm))
+                .then(response => response.json())
+                .then(data => {
+                    displaySearchResults(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred. Please try again.');
+                });
+        }
+
+        // Function to display search results
+        function displaySearchResults(results) {
+            var searchResultsDiv = document.getElementById('searchResults');
+
+            searchResultsDiv.innerHTML = '';
+
+            if (results.length === 0) {
+                searchResultsDiv.innerHTML = 'No matching students found.';
+            } else {
+                var resultList = document.createElement('ul');
+                results.forEach(student => {
+                    var listItem = document.createElement('li');
+                    listItem.textContent = 'Student ID: ' + student.studentId + ', Name: ' + student.firstName + ' ' + student.surname;
+                    resultList.appendChild(listItem);
+                });
+                searchResultsDiv.appendChild(resultList);
+            }
+        }
+    </script>
+</body>
+</html>
+
