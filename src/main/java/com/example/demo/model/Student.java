@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.time.LocalDate;
 
 @Entity
 public class Student {
@@ -20,19 +21,21 @@ public class Student {
     private String phoneNumber;
     private String address;
 
+    // Default constructor
+    public Student() {}
+
+    // Parameterized constructor
+    public Student(String firstName, String surname, LocalDate dateOfBirth, String sex, String gender, String phoneNumber, String address) {
+        this.firstName = firstName;
+        this.surname = surname;
+        this.dateOfBirth = dateOfBirth;
+        this.sex = sex;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+    }
+
     // Getters and setters
-
-    // Constructors
-    public Student() {
-    }
-
-    public Student(String name, int age, String course) {
-        this.name = name;
-        this.age = age;
-        this.course = course;
-    }
-
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -41,27 +44,60 @@ public class Student {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public int getAge() {
-        return age;
+    public String getSurname() {
+        return surname;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
-    public String getCourse() {
-        return course;
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
     }
 
-    public void setCourse(String course) {
-        this.course = course;
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }
+
